@@ -1,32 +1,136 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {useContext, useEffect, useState} from "react";
+import axiosInstance from "../../utils/axiosInstance";
+import {useNavigate} from "react-router-dom";
+import {SessionDispatchContext} from "../../context/SessionContext";
+import {Alert, Collapse, FormControl, IconButton, InputLabel, MenuItem, Select} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import axiosInstanceNoAuth from "../../utils/axiosInstanceNoAuth";
+
 
 
 export default function SignUp({ change }) {
-    const [section, setSection] = React.useState('');
-    const handleSubmit = (event) => {
+    const [errorStatus, setErrorStatus] = useState(false)
+    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
+    const [section, setSection] = useState('')
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [allSections, setAllSections] = useState([])
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const navigate = useNavigate()
+    const dispatch = useContext(SessionDispatchContext)
+
+    useEffect( () => {
+        getSections()
+    }, [])
+
+    const getSections = async () => {
+        try {
+            const response = await axiosInstanceNoAuth.get('/section/')
+            setAllSections(response.data)
+        } catch (error) {
+            console.log("Failed to get sections", error)
+        }
+    }
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-            section: data.get('section')
-        });
+
+        if (email.length === 0 || password.length === 0 || username.length === 0 || !section) {
+
+        } else {
+            setLoading(true)
+
+            const {status, data} = await handleRegister()
+
+            if (status) {
+
+                let loginResponse = await handleLogin()
+
+                if (loginResponse === true) {
+                    setErrorStatus(false)
+                    dispatch({
+                        type: 'start',
+                        sessionStatus: true,
+                        user_id: data.user_id,
+                        section_id: section.section_id,
+                        username: username
+                    });
+
+                    navigate('/')
+                }
+            } else {
+                setErrorStatus(true)
+                const hasEmailError = Object.hasOwn(data, "email")
+                const hasUserError = Object.hasOwn(data, "username")
+
+                const userErrorMessage = "A user with this username already exists."
+                const emailErrorMessage = data.email[0] === "Enter a valid email address." ? data.email : "A user with this email already exists."
+
+                if (hasEmailError && hasUserError) {
+                    setErrorMessage(emailErrorMessage + '\n' + userErrorMessage)
+                } else if (hasEmailError) {
+                    setErrorMessage(emailErrorMessage)
+                } else if (hasUserError) {
+                    setErrorMessage(userErrorMessage)
+                } else {
+                    setErrorMessage("There is a system error at the moment. Please try again later")
+                }
+            }
+            setLoading(false)
+        }
     };
 
-    const handleChange = (event) => {
-        setSection(event.target.value);
-    };
+    const handleRegister = async () => {
+        try {
+            const response = await axiosInstance.post('/register/',
+                {
+                    "username": username,
+                    "password": password,
+                    "email": email,
+                    "section_id": section.section_id
+                })
+
+            return ({
+                status: true,
+                data: response.data.user
+            })
+        } catch (error) {
+            console.log("Sign-up failed", error)
+            return ({
+                status: false,
+                data: error.response.data
+            })
+        }
+    }
+
+    const handleLogin = async () => {
+        try {
+            const response = await axiosInstance.post('/login/',
+                {
+                    "email": email,
+                    "password": password
+                })
+            const {access, refresh} = response.data
+
+            localStorage.setItem('accessToken', access)
+            localStorage.setItem('refreshToken', refresh)
+
+            return true
+        } catch (error) {
+            console.log("Login Failed", error)
+            return false
+        }
+    }
 
     return (
         <Box
@@ -39,46 +143,58 @@ export default function SignUp({ change }) {
             }}
         >
             <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                <LockOutlinedIcon/>
+                <AccountCircleIcon/>
             </Avatar>
             <Typography component="h1" variant="h5">
-                Sign up
+                Sign Up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Section</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="section"
+                        value={section}
+                        label="Section"
+                        onChange={(e) => {
+                            setSection(e.target.value)
+                        }}
+                        onFocus={() => setErrorStatus(false)}
+                    >
+                        {allSections.map((section) => {
+                            return (
+                                <MenuItem key={section.section_id} value={section}>{section.section_name}</MenuItem>
+                            )
+                        })}
+                    </Select>
+                </FormControl>
                 <TextField
+                    error={errorStatus}
                     margin="normal"
                     required
                     fullWidth
                     id="username"
                     label="Username"
                     name="username"
-                    autoComplete="username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    onFocus={() => setErrorStatus(false)}
                     autoFocus
                 />
-                <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Section</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={section}
-                        label="Section"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={1}>Ten</MenuItem>
-                        <MenuItem value={2}>Twenty</MenuItem>
-                        <MenuItem value={3}>Thirty</MenuItem>
-                    </Select>
-                </FormControl>
                 <TextField
+                    error={errorStatus}
                     margin="normal"
                     required
                     fullWidth
                     id="email"
                     label="Email Address"
                     name="email"
-                    autoComplete="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    onFocus={() => setErrorStatus(false)}
                 />
                 <TextField
+                    error={errorStatus}
                     margin="normal"
                     required
                     fullWidth
@@ -86,20 +202,40 @@ export default function SignUp({ change }) {
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="current-password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    onFocus={() => setErrorStatus(false)}
                 />
-                <FormControlLabel
-                    control={<Checkbox value="remember" color="primary"/>}
-                    label="Remember me"
-                />
-                <Button
+                <LoadingButton
                     type="submit"
                     fullWidth
                     variant="contained"
+                    loading={loading}
+                    disabled={!email || !password || !username || !section}
                     sx={{mt: 3, mb: 2}}
                 >
-                    Sign Up
-                </Button>
+                    Register
+                </LoadingButton>
+                <Collapse in={errorStatus} severity="error">
+                    <Alert
+                        severity="error"
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setErrorStatus(false);
+                                }}
+                            >
+                                <CloseIcon fontSize="inherit" />
+                            </IconButton>
+                        }
+                        sx={{ mb: 2 }}
+                    >
+                        {errorMessage}
+                    </Alert>
+                </Collapse>
                 <Grid container>
                     <Grid item>
                         <Link href="#" variant="body2" onClick={() => change()}>

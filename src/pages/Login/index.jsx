@@ -5,17 +5,28 @@ import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {SessionDispatchContext} from "../../context/SessionContext";
 
 
 const defaultTheme = createTheme();
 
 export default function Login() {
     const [isSignIn, setIsSignIn] = useState(true)
+    const dispatch = useContext(SessionDispatchContext)
 
     const handleState = ()=> {
         setIsSignIn(!isSignIn)
     }
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken')
+        if (!accessToken) {
+            dispatch({
+                type:'end'
+            })
+        }
+    }, []);
 
     return (
         <ThemeProvider theme={defaultTheme}>
