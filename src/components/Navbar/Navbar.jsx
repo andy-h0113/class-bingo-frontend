@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Button} from "@mui/material";
 import {helperHooks} from "../../hooks/__helpers";
+import {SessionDispatchContext} from "../../context/SessionContext";
 
 const Navbar = () => {
+    const dispatch = useContext(SessionDispatchContext)
     const handleClick = () => {
-        const dispatch = helperHooks.sessionDispatch
+
         const navigate = helperHooks.navigate
 
         localStorage.removeItem("accessToken")

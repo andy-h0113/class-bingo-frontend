@@ -91,6 +91,7 @@ export default function SignIn({ change }) {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    bgcolor: 'background.paper'
                 }}
             >
                 <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
@@ -99,7 +100,7 @@ export default function SignIn({ change }) {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1, maxWidth:500}}>
                     <TextField
                         error={errorStatus}
                         margin="normal"

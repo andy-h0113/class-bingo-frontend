@@ -36,7 +36,7 @@ export default function SignUp({ change }) {
 
     const getSections = async () => {
         try {
-            const response = await axiosInstanceNoAuth.get('/section/')
+            const response = await axiosInstance.get('/section/')
             setAllSections(response.data)
         } catch (error) {
             console.log("Failed to get sections", error)
@@ -140,6 +140,7 @@ export default function SignUp({ change }) {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                bgcolor: 'background.paper'
             }}
         >
             <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
@@ -148,7 +149,7 @@ export default function SignUp({ change }) {
             <Typography component="h1" variant="h5">
                 Sign Up
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1}}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 1, maxWidth:500}}>
                 <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">Section</InputLabel>
                     <Select

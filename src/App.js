@@ -21,10 +21,10 @@ import {helperHooks} from "./hooks/__helpers";
 
 function App() {
     const initialSession = {
-        "sessionStatus": false,
-        "user_id": null,
-        "section_id": null,
-        "username": null
+        "sessionStatus": localStorage.getItem('sessionStatus'),
+        "user_id": localStorage.getItem('user_id'),
+        "section_id": localStorage.getItem('section_id'),
+        "username": localStorage.getItem('username')
     }
 
     const [session, dispatch] = useReducer(

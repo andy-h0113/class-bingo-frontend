@@ -4,7 +4,7 @@ import {helperHooks} from "../hooks/__helpers";
 const authService = {
     refreshToken: () => {
         const refreshToken = localStorage.getItem('refreshToken')
-        const response = axiosInstance.post('/refresh/',
+        axiosInstance.post('/refresh/',
             {
                 "refresh": refreshToken
             }).then((response) => {
@@ -21,6 +21,11 @@ const authService = {
             // Handle token refresh error (logout user)
             localStorage.removeItem("accessToken")
             localStorage.removeItem("refreshToken")
+
+            localStorage.setItem('sessionStatus', false)
+            localStorage.setItem('user_id', null)
+            localStorage.setItem('section_id', null)
+            localStorage.setItem('username', null)
 
             helperHooks.navigate('/login')
 
