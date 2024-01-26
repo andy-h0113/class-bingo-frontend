@@ -6,10 +6,12 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CssBaseline from "@mui/material/CssBaseline";
 import {SessionContext} from "../../context/SessionContext";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
     const [boards, setBoards] = useState([])
     const session = useContext(SessionContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
         getBoards()
@@ -26,7 +28,7 @@ const Home = () => {
     }
 
     const handleSelect = (board) => {
-        console.log(board)
+        navigate('/bingo/' + board.board_id)
     }
 
     return (

@@ -17,6 +17,7 @@ import Leaderboard from './pages/Leaderboard/index'
 import sessionReducer from "./context/SessionReducer";
 import {SessionContext, SessionDispatchContext} from "./context/SessionContext";
 import {helperHooks} from "./hooks/__helpers";
+import NoMatch from "./pages/NoMatch";
 
 
 function App() {
@@ -42,8 +43,9 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
-                        <Route path="/bingo" element={<Bingo />} />
+                        <Route path="/bingo/:boardId" element={<Bingo />} />
                         <Route path="/leaderboard" element={<Leaderboard />} />
+                        <Route path="*" element={<NoMatch />} />
                     </Routes>
                 </SessionDispatchContext.Provider>
             </SessionContext.Provider>

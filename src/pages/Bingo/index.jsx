@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import {useParams} from "react-router-dom";
 
 const Bingo = () => {
+    const { boardId} = useParams()
+
     return (
         <div>
-            Bingo
+            Bingo, {boardId}
         </div>
     )
 }
