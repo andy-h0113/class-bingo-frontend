@@ -31,7 +31,7 @@ const Home = () => {
     }
 
     const handleSelect = (board) => {
-        navigate('/bingo/' + board.board_id)
+        navigate('/bingo/' + board.board_id + '/' + board.board_name)
     }
 
     return (

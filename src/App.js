@@ -43,7 +43,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<Login />} />
-                        <Route path="/bingo/:boardId" element={<Bingo />} />
+                        <Route path="/bingo/:boardId/:boardName" element={<Bingo />} />
                         <Route path="/leaderboard" element={<Leaderboard />} />
                         <Route path="*" element={<NoMatch />} />
                     </Routes>
