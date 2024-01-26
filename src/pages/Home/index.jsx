@@ -22,7 +22,10 @@ const Home = () => {
             const {data} = await axiosInstance('board/' + session.section_id + '/')
             setBoards(data)
         } catch (error) {
-            console.error(error)
+
+            //TODO REMOVE LATER
+            console.log(error)
+            getBoards()
         }
 
     }
@@ -36,7 +39,7 @@ const Home = () => {
             <Box
                 sx={{
                     bgcolor: 'background.paper',
-                    pt: 8,
+                    pt: 6,
                 }}
             >
                 <Container maxWidth="lg">
@@ -47,14 +50,14 @@ const Home = () => {
                         color="text.primary"
                         gutterBottom
                     >
-                        Business Bozo Bingo
+                        Welcome, {session.username}
                     </Typography>
                     <Typography variant="h5" align="left" color="text.secondary" paragraph>
-                        Welcome, {session.username}
+                        All active bingo boards:
                     </Typography>
                 </Container>
             </Box>
-            <Container sx={{ py: 8 }} maxWidth="lg">
+            <Container sx={{ py: 6 }} maxWidth="lg">
                 {/* End hero unit */}
                 <Grid container spacing={4}>
                     {boards.map((board) => (
