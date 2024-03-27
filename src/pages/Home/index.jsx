@@ -19,7 +19,7 @@ const Home = () => {
 
     const getBoards = async () => {
         try {
-            const {data} = await axiosInstance('board/' + session.section_id + '/')
+            const {data} = await axiosInstance('board/section/' + session.section_id + '/')
             setBoards(data)
         } catch (error) {
 

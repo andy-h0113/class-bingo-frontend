@@ -2,15 +2,14 @@ import React, {useContext, useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import {SessionContext} from "../../context/SessionContext";
-import {Card, CardActionArea, CardContent, Container} from "@mui/material";
+import {Container} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import axiosInstance from "../../utils/axiosInstance";
+import BingoBoard from "./BingoBoard";
 
 const Bingo = () => {
     const filler = useParams()
-    const board = [filler]
 
 
     const { boardId, boardName} = useParams()
@@ -24,6 +23,13 @@ const Bingo = () => {
     const getBoardTiles = async () => {
         try {
             const { data } = await axiosInstance.get('boardtileuser/' + boardId + '/' + session.user_id + '/')
+            data.sort((a, b) => {
+                if (a.position_row === b.position_row) {
+                    return a.position_col - b.position_col;
+                }
+                return a.position_row - b.position_row;
+            });
+
             setBoardTiles(data)
             console.log(data)
         } catch (error) {
@@ -48,30 +54,12 @@ const Bingo = () => {
                         color="text.primary"
                         gutterBottom
                     >
-                        {boardName}, {boardId}, {session.user_id}, {session.section_id}
+                        {boardName}
                     </Typography>
                 </Container>
             </Box>
-            <Container sx={{ py: 6 }} maxWidth="lg">
-                <Grid container spacing={4}>
-                    {boardTiles.map((tile) => (
-                        <Grid item key={tile.tile} xs={12} sm={6} md={4}>
-                            <Card
-                                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                            >
-                                <CardActionArea onClick={() => {
-                                    console.log("click")
-                                }}>
-                                    <CardContent sx={{ flexGrow: 1 }}>
-                                        <Typography align="center" variant="h6" component="h2">
-                                            {tile.tile}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
+            <Container sx={{ py: 3, pb: 6 }} maxWidth="md">
+                <BingoBoard data={boardTiles}/>
             </Container>
         </CssBaseline>
     )
