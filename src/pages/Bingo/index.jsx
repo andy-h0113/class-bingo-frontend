@@ -7,39 +7,50 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import axiosInstance from "../../utils/axiosInstance";
 import BingoBoard from "./BingoBoard";
+import Grid from "@mui/material/Grid";
 
 const Bingo = () => {
     const filler = useParams()
 
 
-    const { boardId, boardName} = useParams()
+    // const { boardId, boardName} = useParams()
     const session = useContext(SessionContext)
 
+    const boardName = "Board 1"
 
     return (
-        <div>
+        <React.Fragment>
             <Box
                 sx={{
                     bgcolor: 'background.paper',
                     pt: 6,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column'
                 }}
             >
-                <Container maxWidth="lg">
-                    <Typography
-                        component="h1"
-                        variant="h2"
-                        align="left"
-                        color="text.primary"
-                        gutterBottom
-                    >
-                        {boardName}
-                    </Typography>
-                </Container>
+                <Typography
+                    component="h1"
+                    variant="h2"
+                    align="center"
+                    color="text.primary"
+                    gutterBottom
+                >
+                    {boardName}
+                </Typography>
             </Box>
-            <Container sx={{ py: 3, pb: 6 }} maxWidth="md">
+            <Box
+                sx={{
+                    bgcolor: 'background.paper',
+                    pb: 28,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
+            >
                 <BingoBoard/>
-            </Container>
-        </div>
+            </Box>
+        </React.Fragment>
     )
 }
 

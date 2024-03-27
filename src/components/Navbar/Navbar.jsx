@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import {SessionDispatchContext} from "../../context/SessionContext";
 import {useNavigate} from "react-router-dom";
+import {palette} from "@mui/system";
 
 
 const Navbar = () => {
@@ -45,11 +46,11 @@ const Navbar = () => {
 
     return (
         <AppBar position="static">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
+            <Container maxWidth="l" sx={{bgcolor: "background.component", boxShadow: 2}}>
+                <Toolbar disableGutter={true}>
 
                     {/*FROM HERE UNTIL THE NEXT COMMENT IS ONLY FOR REGULAR SCREENS*/}
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'primary.main' }} />
                     <Typography
                         variant="h6"
                         noWrap
@@ -61,7 +62,7 @@ const Navbar = () => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: 'primary.main',
                             textDecoration: 'none',
                         }}
                     >
@@ -76,7 +77,7 @@ const Navbar = () => {
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
-                            color="inherit"
+                            sx={{color: "primary.main"}}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -96,6 +97,7 @@ const Navbar = () => {
                             onClose={handleCloseNavMenu}
                             sx={{
                                 display: { xs: 'block', md: 'none' },
+                                color: 'primary.main'
                             }}
                         >
                             {pages.map((page) => (
@@ -103,17 +105,17 @@ const Navbar = () => {
                                     handleCloseNavMenu()
                                     navigate(page.url)
                                 }}>
-                                    <Typography textAlign="center">{page.name}</Typography>
+                                    <Typography textAlign="center" sx={{color: 'primary.main'}}>{page.name}</Typography>
                                 </MenuItem>
                             ))}
-                            <MenuItem onClick={handleLogout}>
+                            <MenuItem onClick={handleLogout} sx={{color: 'primary.main'}}>
                                 Logout
                             </MenuItem>
                         </Menu>
                     </Box>
 
                     {/*BELOW IS FOR SMALLER SCREENS*/}
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: 'primary.main' }} />
                     <Typography
                         variant="h5"
                         noWrap
@@ -126,7 +128,7 @@ const Navbar = () => {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: 'primary.main',
                             textDecoration: 'none',
                         }}
                     >
@@ -134,7 +136,7 @@ const Navbar = () => {
                     </Typography>
 
                     {/*BELOW IS FOR REGULAR SCREENS*/}
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right" }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", color: 'background.default' }}>
                         {pages.map((page) => (
                             <Button
                                 key={page.name}
@@ -142,12 +144,12 @@ const Navbar = () => {
                                     handleCloseNavMenu()
                                     navigate(page.url)
                                 }}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: 'primary.main', display: 'block' }}
                             >
                                 {page.name}
                             </Button>
                         ))}
-                        <Button onClick={handleLogout} sx={{ my: 2, color: 'white', display: 'block', borderColor: 'white' }} variant="outlined">
+                        <Button onClick={handleLogout} sx={{ my: 2, color: 'primary.main', display: 'block', borderColor: 'white' }} variant="outlined">
                             Logout
                         </Button>
                     </Box>
