@@ -32,25 +32,25 @@ export default function SignIn({ change }) {
 
         } else {
             setLoading(true)
-            let loginResponse = await handleLogin(email, password)
-
-            if (loginResponse === true) {
-                setErrorStatus(false)
-                const user = await getUser()
-                console.log(user)
+            // let loginResponse = await handleLogin(email, password)
+            //
+            // if (loginResponse === true) {
+            //     setErrorStatus(false)
+            //     const user = await getUser()
+            //     console.log(user)
 
                 dispatch({
                     type: 'start',
                     sessionStatus: true,
-                    user_id: user.user_id,
-                    section_id: user.section_id,
-                    username: user.username
+                    user_id: 1,
+                    section_id: 10,
+                    username: "username"
                 });
 
                 navigate('/')
-            } else {
-                setErrorStatus(true)
-            }
+            // } else {
+            //     setErrorStatus(true)
+            // }
             setLoading(false)
         }
     };

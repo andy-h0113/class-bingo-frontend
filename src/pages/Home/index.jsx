@@ -9,33 +9,50 @@ import {SessionContext} from "../../context/SessionContext";
 import {useNavigate} from "react-router-dom";
 
 const Home = () => {
-    const [boards, setBoards] = useState([])
+    // const [boards, setBoards] = useState([])
     const session = useContext(SessionContext)
     const navigate = useNavigate()
 
-    useEffect(() => {
-        getBoards()
-    }, []);
+    // useEffect(() => {
+    //     getBoards()
+    // }, []);
+    //
+    // const getBoards = async () => {
+    //     try {
+    //         const {data} = await axiosInstance('board/section/' + session.section_id + '/')
+    //         setBoards(data)
+    //     } catch (error) {
+    //
+    //         //TODO REMOVE LATER
+    //         console.log(error)
+    //         getBoards()
+    //     }
+    //
+    // }
 
-    const getBoards = async () => {
-        try {
-            const {data} = await axiosInstance('board/section/' + session.section_id + '/')
-            setBoards(data)
-        } catch (error) {
-
-            //TODO REMOVE LATER
-            console.log(error)
-            getBoards()
+    const boards = [
+        {
+            "board_id": 1,
+            "section": 3,
+            "board_name": "Board 1",
+            "dimension": 5,
+            "active": true
+        },
+        {
+            "board_id": 2,
+            "section": 3,
+            "board_name": "Board 2",
+            "dimension": 5,
+            "active": true
         }
-
-    }
+    ]
 
     const handleSelect = (board) => {
-        navigate('/bingo/' + board.board_id + '/' + board.board_name)
+        navigate('/bingo/1/2')
     }
 
     return (
-        <CssBaseline>
+        <div>
             <Box
                 sx={{
                     bgcolor: 'background.paper',
@@ -77,7 +94,7 @@ const Home = () => {
                     ))}
                 </Grid>
             </Container>
-        </CssBaseline>
+        </div>
     )
 }
 

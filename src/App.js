@@ -18,6 +18,7 @@ import sessionReducer from "./context/SessionReducer";
 import {SessionContext, SessionDispatchContext} from "./context/SessionContext";
 import {helperHooks} from "./hooks/__helpers";
 import NoMatch from "./pages/NoMatch";
+import CssBaseline from "@mui/material/CssBaseline";
 
 
 function App() {
@@ -40,13 +41,16 @@ function App() {
             <SessionContext.Provider value={session}>
                 <SessionDispatchContext.Provider value={dispatch}>
                     {session.sessionStatus && <Navbar/>}
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/bingo/:boardId/:boardName" element={<Bingo />} />
-                        <Route path="/leaderboard" element={<Leaderboard />} />
-                        <Route path="*" element={<NoMatch />} />
-                    </Routes>
+                    <CssBaseline enableColorScheme>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            {/*<Route path="/bingo/:boardId/:boardName" element={<Bingo />} />*/}
+                            <Route path="/bingo/1/2" element={<Bingo />} />
+                            <Route path="/leaderboard" element={<Leaderboard />} />
+                            <Route path="*" element={<NoMatch />} />
+                        </Routes>
+                    </CssBaseline>
                 </SessionDispatchContext.Provider>
             </SessionContext.Provider>
 

@@ -16,14 +16,14 @@ export default function sessionReducer(initialState, action) {
         }
         case 'end': {
             localStorage.setItem('sessionStatus', false)
-            localStorage.setItem('user_id', null)
-            localStorage.setItem('section_id', null)
-            localStorage.setItem('username', null)
+            localStorage.setItem('user_id', 2)
+            localStorage.setItem('section_id', 2)
+            localStorage.setItem('username', "username")
             return {
                 "sessionStatus": false,
-                "user_id": null,
-                "section_id": null,
-                "username": null
+                "user_id": 2,
+                "section_id": 2,
+                "username": "username"
             }
         }
         default: {

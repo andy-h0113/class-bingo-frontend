@@ -14,32 +14,10 @@ const Bingo = () => {
 
     const { boardId, boardName} = useParams()
     const session = useContext(SessionContext)
-    const [boardTiles, setBoardTiles] = useState([])
 
-    useEffect(() => {
-        getBoardTiles()
-    }, []);
-
-    const getBoardTiles = async () => {
-        try {
-            const { data } = await axiosInstance.get('boardtileuser/' + boardId + '/' + session.user_id + '/')
-            data.sort((a, b) => {
-                if (a.position_row === b.position_row) {
-                    return a.position_col - b.position_col;
-                }
-                return a.position_row - b.position_row;
-            });
-
-            setBoardTiles(data)
-            console.log(data)
-        } catch (error) {
-            console.log(error)
-            getBoardTiles()
-        }
-    }
 
     return (
-        <CssBaseline>
+        <div>
             <Box
                 sx={{
                     bgcolor: 'background.paper',
@@ -59,9 +37,9 @@ const Bingo = () => {
                 </Container>
             </Box>
             <Container sx={{ py: 3, pb: 6 }} maxWidth="md">
-                <BingoBoard data={boardTiles}/>
+                <BingoBoard/>
             </Container>
-        </CssBaseline>
+        </div>
     )
 }
 

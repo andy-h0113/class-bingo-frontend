@@ -24,24 +24,68 @@ export default function SignUp({ change }) {
     const [section, setSection] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
-    const [allSections, setAllSections] = useState([])
+    // const [allSections, setAllSections] = useState([])
     const [errorMessage, setErrorMessage] = useState('')
+
+    const allSections = [
+        {
+            "section_id": 1,
+            "section_name": "Section 1"
+        },
+        {
+            "section_id": 2,
+            "section_name": "Section 2"
+        },
+        {
+            "section_id": 3,
+            "section_name": "Section 3"
+        },
+        {
+            "section_id": 4,
+            "section_name": "Section 4"
+        },
+        {
+            "section_id": 5,
+            "section_name": "Section 5"
+        },
+        {
+            "section_id": 6,
+            "section_name": "Section 6"
+        },
+        {
+            "section_id": 7,
+            "section_name": "Section 7"
+        },
+        {
+            "section_id": 8,
+            "section_name": "Section 8"
+        },
+        {
+            "section_id": 9,
+            "section_name": "Section 9"
+        },
+        {
+            "section_id": 10,
+            "section_name": "Section 10"
+        }
+    ]
+
 
     const navigate = useNavigate()
     const dispatch = useContext(SessionDispatchContext)
 
-    useEffect( () => {
-        getSections()
-    }, [])
+    // useEffect( () => {
+    //     getSections()
+    // }, [])
 
-    const getSections = async () => {
-        try {
-            const response = await axiosInstance.get('/section/')
-            setAllSections(response.data)
-        } catch (error) {
-            console.log("Failed to get sections", error)
-        }
-    }
+    // const getSections = async () => {
+    //     try {
+    //         const response = await axiosInstance.get('/section/')
+    //         setAllSections(response.data)
+    //     } catch (error) {
+    //         console.log("Failed to get sections", error)
+    //     }
+    // }
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -50,42 +94,42 @@ export default function SignUp({ change }) {
         } else {
             setLoading(true)
 
-            const {status, data} = await handleRegister()
+            // const {status, data} = await handleRegister()
 
-            if (status) {
+            // if (status) {
 
-                let loginResponse = await handleLogin()
+                // let loginResponse = await handleLogin()
 
-                if (loginResponse === true) {
-                    setErrorStatus(false)
+                // if (loginResponse === true) {
+                //     setErrorStatus(false)
                     dispatch({
                         type: 'start',
                         sessionStatus: true,
-                        user_id: data.user_id,
+                        user_id: 1,
                         section_id: section.section_id,
                         username: username
                     });
 
                     navigate('/')
-                }
-            } else {
-                setErrorStatus(true)
-                const hasEmailError = Object.hasOwn(data, "email")
-                const hasUserError = Object.hasOwn(data, "username")
-
-                const userErrorMessage = "A user with this username already exists."
-                const emailErrorMessage = data.email[0] === "Enter a valid email address." ? data.email : "A user with this email already exists."
-
-                if (hasEmailError && hasUserError) {
-                    setErrorMessage(emailErrorMessage + '\n' + userErrorMessage)
-                } else if (hasEmailError) {
-                    setErrorMessage(emailErrorMessage)
-                } else if (hasUserError) {
-                    setErrorMessage(userErrorMessage)
-                } else {
-                    setErrorMessage("There is a system error at the moment. Please try again later")
-                }
-            }
+                // }
+            // } else {
+            //     setErrorStatus(true)
+            //     const hasEmailError = Object.hasOwn(data, "email")
+            //     const hasUserError = Object.hasOwn(data, "username")
+            //
+            //     const userErrorMessage = "A user with this username already exists."
+            //     const emailErrorMessage = data.email[0] === "Enter a valid email address." ? data.email : "A user with this email already exists."
+            //
+            //     if (hasEmailError && hasUserError) {
+            //         setErrorMessage(emailErrorMessage + '\n' + userErrorMessage)
+            //     } else if (hasEmailError) {
+            //         setErrorMessage(emailErrorMessage)
+            //     } else if (hasUserError) {
+            //         setErrorMessage(userErrorMessage)
+            //     } else {
+            //         setErrorMessage("There is a system error at the moment. Please try again later")
+            //     }
+            // }
             setLoading(false)
         }
     };
@@ -132,6 +176,10 @@ export default function SignUp({ change }) {
         }
     }
 
+    const handleChange = (event) => {
+        setSection(event.target.value);
+    };
+
     return (
         <Box
             sx={{
@@ -157,9 +205,7 @@ export default function SignUp({ change }) {
                         id="section"
                         value={section}
                         label="Section"
-                        onChange={(e) => {
-                            setSection(e.target.value)
-                        }}
+                        onChange={handleChange}
                         onFocus={() => setErrorStatus(false)}
                     >
                         {allSections.map((section) => {
