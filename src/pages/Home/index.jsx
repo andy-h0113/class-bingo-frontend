@@ -1,15 +1,27 @@
 import React, {useContext, useEffect, useState} from 'react'
 import axiosInstance from "../../utils/axiosInstance";
 import Box from "@mui/material/Box";
-import {Card, CardActionArea, CardContent, Container} from "@mui/material";
+import {Card, CardActionArea, CardContent, Container, IconButton, Popover, Snackbar, Stack} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CssBaseline from "@mui/material/CssBaseline";
 import {SessionContext} from "../../context/SessionContext";
 import {useNavigate} from "react-router-dom";
+import Fab from '@mui/material/Fab';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import AddTileDialog from "./AddTileDialog";
+import CloseIcon from "@mui/icons-material/Close";
+import AddBoardDialog from "./AddBoardDialog";
+
 
 const Home = () => {
     // const [boards, setBoards] = useState([])
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [tileDialog, setTileDialog] = React.useState(false)
+    const [boardDialog, setBoardDialog] = React.useState(false)
+    const [confirmMsg, setConfirmMsg] = React.useState(false)
+
     const session = useContext(SessionContext)
     const navigate = useNavigate()
 
@@ -52,6 +64,46 @@ const Home = () => {
     const handleSelect = (board) => {
         navigate('/bingo/1/2')
     }
+
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl)
+
+    const handleTileDialogOpen = () => {
+        handlePopoverClose()
+        setTileDialog(true)
+    }
+    const handleBoardDialogOpen = () => {
+        handlePopoverClose()
+        setBoardDialog(true)
+    }
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setConfirmMsg(false);
+    }
+
+    const action = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSnackbar}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
 
     return (
         <React.Fragment>
@@ -98,7 +150,39 @@ const Home = () => {
                         </Grid>
                     ))}
                 </Grid>
+                <Stack sx={{ py: 10 }}direction="row" justifyContent="flex-start" alignItems="center">
+                    <Fab color="primary" aria-label="add" onClick={handlePopoverOpen}>
+                        <AddIcon sx={{ color: 'background.default'}}/>
+                    </Fab>
+                    <Popover
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handlePopoverClose}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <Stack direction="column" justifyContent="flex-start" alignItems="left">
+                            <Button size="large" onClick={handleTileDialogOpen}>Create Tile</Button>
+                            <Button size="large" onClick={handleBoardDialogOpen}>Create Board</Button>
+                        </Stack>
+                    </Popover>
+                </Stack>
             </Container>
+            <AddTileDialog boards={boards} setTileDialog={setTileDialog} tileDialog={tileDialog} setConfirmMsg={setConfirmMsg}/>
+            <AddBoardDialog setBoardDialog={setBoardDialog} boardDialog={boardDialog} setConfirmMsg={setConfirmMsg}/>
+            <Snackbar
+                open={confirmMsg}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message="Created"
+                action={action}
+            />
         </React.Fragment>
     )
 }
