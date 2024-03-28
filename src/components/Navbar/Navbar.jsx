@@ -47,7 +47,7 @@ const Navbar = () => {
     return (
         <AppBar position="static">
             <Container maxWidth="l" sx={{bgcolor: "background.component", boxShadow: 2}}>
-                <Toolbar disableGutter={true}>
+                <Toolbar>
 
                     {/*FROM HERE UNTIL THE NEXT COMMENT IS ONLY FOR REGULAR SCREENS*/}
                     <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'primary.main' }} />
