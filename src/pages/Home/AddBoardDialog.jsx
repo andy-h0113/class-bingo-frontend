@@ -63,6 +63,7 @@ const AddBoardDialog = ({boardDialog, setBoardDialog, setConfirmMsg}) => {
                     <FormControl sx={{ m: 1, width: 500 }}>
                         <TextField
                             error={errorStatus}
+                            autoFocus
                             margin="normal"
                             required
                             fullWidth

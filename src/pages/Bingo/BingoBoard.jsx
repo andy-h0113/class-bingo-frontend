@@ -108,7 +108,7 @@ const BingoBoard = ({winStatusChanger, getBoardTiles, setBoardTiles, boardTiles}
                                 height: "auto",
                                 border: "0",
                                 borderRadius: "16px",
-                                boxShadow: 0,
+                                boxShadow: 1,
                                 borderColor: 'success.main',
                                 display: "flex",
                                 justifyContent: "center",
